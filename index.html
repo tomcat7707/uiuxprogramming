@@ -4,6 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <title>차와 함께 오래</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -41,18 +46,18 @@
         <section id="features"> <!-- 기존 주요 기능 목록 -->
             <h2>주요 기능</h2>
         
-            <ul>
-                <li>
+            <ul class="feature-list">
+                <li class="feature-card">
                     <h3>관리 일정 한눈에 보기</h3>
                     <p>엔진오일과 소모품 등 내 차의 관리 일정을 확인합니다.</p>
                 </li>
         
-                <li>
+                <li class="feature-card">
                     <h3>관리 시기 알림</h3>
                     <p>차량 관리가 필요한 시기를 놓치지 않도록 알려드립니다.</p>
                 </li>
         
-                <li>
+                <li class="feature-card">
                     <h3>차량 관리 기록</h3>
                     <p>언제 무엇을 관리했는지 기록하여 차량 상태를 쉽게 확인합니다.</p>
                 </li>
@@ -69,7 +74,7 @@
             </ol>
         </section>
 
-        <section id="subscribe"> <!-- 기존 차량 관리 알림 폼 -->
+        <section id="subscribe" class="subscribe-card"> <!-- 기존 차량 관리 알림 폼 -->
             <h2>차량 관리 알림 받기</h2>
         
             <form>
