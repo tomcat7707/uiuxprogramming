@@ -256,3 +256,22 @@ input[type="email"] {
         min-height: 48px;
     }
 } /* 768px 미디어 쿼리 끝 */
+
+#subscribeMessage {
+    margin-top: 16px;
+    color: #555763;
+}
+
+#subscribeMessage.isSuccess {
+    color: #245c3a;
+    background-color: #e7f7ed;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+#subscribeButton:disabled {
+    color: #ffffff;
+    background-color: #a8a8b2;
+    cursor: not-allowed;
+}
