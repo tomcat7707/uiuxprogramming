@@ -83,6 +83,44 @@
             </ol>
         </section>
 
+        <section id="event-practice">
+            <h2>차량 관리 준비</h2>
+
+            <div class="event-grid">
+                <article class="event-card">
+                    <h3>화면 테마</h3>
+                    <button id="theme-button" type="button">어두운 테마로 바꾸기</button>
+                </article>
+
+                <article class="event-card">
+                    <h3>차종 입력</h3>
+
+                    <label for="nickname">내 차종 (10자 이내)</label>
+                    <input type="text" id="nickname" maxlength="10">
+
+                    <p id="nickname-count" aria-live="polite">0 / 10</p>
+                </article>
+
+                <article class="event-card">
+                    <h3>관리 정보 확인</h3>
+
+                    <label class="agree-row">
+                        <input type="checkbox" id="agree-check">
+                        관리 정보를 확인할 준비가 되었습니다.
+                    </label>
+
+                    <p id="agree-message" aria-live="polite">
+                        체크하면 관리 정보를 확인할 수 있습니다.
+                    </p>
+
+                    <button id="start-button" type="button" disabled>
+                        관리 정보 확인하기
+                    </button>
+                </article>
+            </div>
+
+        </section>
+
         <section id="subscribe" class="subscribe-card"> <!-- 기존 차량 관리 알림 폼 -->
             <h2>차량 관리 알림 받기</h2>
         

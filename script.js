@@ -40,3 +40,28 @@ function handleSubscribe(event) {
 }
 
 subscribeForm.addEventListener("submit", handleSubscribe);
+
+const themeButton = document.querySelector("#theme-button");
+const nicknameInput = document.querySelector("#nickname");
+const nicknameCount = document.querySelector("#nickname-count");
+const agreeCheck = document.querySelector("#agree-check");
+const agreeMessage = document.querySelector("#agree-message");
+const startButton = document.querySelector("#start-button");
+
+function handleThemeClick(event) {
+    console.log("click:", event.currentTarget.id);
+}
+
+themeButton.addEventListener("click", handleThemeClick);
+
+function handleNicknameInput(event) {
+    console.log("input:", nicknameInput.value.length);
+}
+
+nicknameInput.addEventListener("input", handleNicknameInput);
+
+function handleAgreeChange() {
+    console.log("change:", agreeCheck.checked);
+}
+
+agreeCheck.addEventListener("change", handleAgreeChange);
