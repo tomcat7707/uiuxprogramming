@@ -278,6 +278,9 @@ body.dark .subscribe-card {
     color: #5b5870;
     background-color: #ffffff;
     border: 1px solid #deddea;
+
+    padding: 10px 14px;
+    border-radius: 8px;
 }
 
 .tab:hover {
