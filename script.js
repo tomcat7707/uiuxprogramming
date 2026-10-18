@@ -6,7 +6,7 @@ function makeSubscribeMessage(email, subscribed) {
     if (subscribed === true) {
         return email + "로 신청이 완료되었습니다.";
     }
-    
+
     return "이메일을 입력한 뒤 신청해 주세요.";
 }
 
@@ -21,7 +21,7 @@ function handleSubscribe(event) {
     const subscriberEmail = emailInput.value.trim();
 
     if (!subscriberEmail) {
-        subscribeMessage.textContent = 
+        subscribeMessage.textContent =
             "이메일을 입력한 뒤 신청해 주세요.";
         emailInput.focus();
         return;
@@ -73,8 +73,9 @@ function handleAgreeChange() {
     startButton.disabled = !agreed;
 
     agreeMessage.textContent = agreed
-        ? "관리 정보를 확인할 수 있습니다."
-        : "체크하면 관리 정보를 확인할 수 있습니다.";
+        ? "상담 메모 작성을 시작할 수 있습니다."
+        : "체크하면 상담 메모 작성을 시작할 수 있습니다.";
+
 
     if (agreed) {
         agreeMessage.classList.add("is-ready");
@@ -118,4 +119,154 @@ function handleTabClick(event) {
 
 tabs.forEach(function (tab) {
     tab.addEventListener("click", handleTabClick);
+});
+
+const trainingFlow = document.querySelector("#training-flow");
+const flowSteps = trainingFlow.querySelectorAll(".step");
+const progressItems = trainingFlow.querySelectorAll(".progress_item");
+const symptomInput = document.querySelector("#symptom-input");
+const symptomError = document.querySelector("#symptom-error");
+const symptomNext = document.querySelector("#symptom-next");
+const frequencyRange = document.querySelector("#frequency-range");
+const frequencyValue = document.querySelector("#frequency-value");
+const warningOption = document.querySelector("#warning-option");
+const warningOptions = document.querySelector("#warning-options");
+const optionPrev = document.querySelector("#option-prev");
+const optionNext = document.querySelector("#option-next");
+const summaryPrev = document.querySelector("#summary-prev");
+const finishButton = document.querySelector("#finish-button");
+const restartButton = document.querySelector("#restart-button");
+const summarySymptom = document.querySelector("#summary-symptom");
+const summaryFrequency = document.querySelector("#summary-frequency");
+const summaryWarning = document.querySelector("#summary-warning");
+
+const completeSymptom = document.querySelector("#complete-symptom");
+const completeFrequency = document.querySelector("#complete-frequency");
+const completeWarning = document.querySelector("#complete-warning");
+
+const frequencyValues = ["한 번", "가끔", "자주"];
+
+const formData = {
+    symptom: "", frequency: "가끔", warning: false, warningColor: "잘 모르겠음"
+};
+
+function showStep(index) {
+    flowSteps.forEach((step, i) => { step.hidden = i !== index; });
+    progressItems.forEach((item, i) => {
+        item.classList.toggle("is-active", i === index);
+    });
+}
+
+const startDialog = document.querySelector("#start-dialog");
+const dialogBack = document.querySelector("#dialog-back");
+const dialogConfirm = document.querySelector("#dialog-confirm");
+
+function resetMemoPreparation() {
+    agreeCheck.checked = false;
+    trainingFlow.hidden = true;
+    handleAgreeChange();
+    agreeCheck.focus();
+}
+
+startButton.addEventListener("click", () => {
+    if (!agreeCheck.checked) return;
+    startDialog.showModal();
+});
+
+dialogBack.addEventListener("click", () => {
+    startDialog.close();
+    resetMemoPreparation();
+});
+
+
+startDialog.addEventListener("cancel", resetMemoPreparation);
+dialogConfirm.addEventListener("click", () => {
+    if (!agreeCheck.checked) return;
+    startDialog.close();
+    trainingFlow.hidden = false;
+    showStep(0);
+    trainingFlow.scrollIntoView({ behavior: "smooth" });
+    symptomInput.focus();
+});
+
+
+function validateSymptom() {
+    const value = symptomInput.value.trim();
+
+    if (!value) {
+        symptomError.textContent = "차량에서 느낀 현상을 입력해 주세요.";
+        symptomInput.classList.add("has-error");
+        symptomInput.focus();
+        return false;
+    }
+
+    symptomError.textContent = "";
+    symptomInput.classList.remove("has-error");
+    formData.symptom = value;
+    return true;
+}
+
+
+symptomNext.addEventListener("click", () => {
+    if (!validateSymptom()) return;
+    showStep(1);
+});
+
+
+frequencyRange.addEventListener("input", () => {
+    frequencyValue.value = frequencyValues[frequencyRange.value];
+});
+
+
+warningOption.addEventListener("change", () => {
+    warningOptions.hidden = !warningOption.checked;
+});
+
+
+optionPrev.addEventListener("click", () => showStep(0));
+optionNext.addEventListener("click", () => {
+    formData.frequency = frequencyValues[frequencyRange.value];
+    formData.warning = warningOption.checked;
+    const color = document.querySelector('input[name="warning-color"]:checked');
+    formData.warningColor = color.value;
+    summarySymptom.textContent = formData.symptom;
+    summaryFrequency.textContent = formData.frequency;
+    summaryWarning.textContent = formData.warning ? formData.warningColor : "경고등 정보 미입력";
+    showStep(2);
+});
+
+summaryPrev.addEventListener("click", () => showStep(1));
+
+finishButton.addEventListener("click", () => {
+    completeSymptom.textContent = summarySymptom.textContent;
+    completeFrequency.textContent = summaryFrequency.textContent;
+    completeWarning.textContent = summaryWarning.textContent;
+    showStep(3);
+});
+
+restartButton.addEventListener("click", () => {
+    formData.symptom = "";
+    formData.frequency = "가끔";
+    formData.warning = false;
+    formData.warningColor = "잘 모르겠음";
+
+    symptomInput.value = "";
+    symptomError.textContent = "";
+    symptomInput.classList.remove("has-error");
+
+    frequencyRange.value = "1";
+    frequencyValue.value = "가끔";
+    warningOption.checked = false;
+    warningOptions.hidden = true;
+    document.querySelector('input[name="warning-color"][value="잘 모르겠음"]').checked = true;
+
+    summarySymptom.textContent = "";
+    summaryFrequency.textContent = "";
+    summaryWarning.textContent = "";
+
+    completeSymptom.textContent = "";
+    completeFrequency.textContent = "";
+    completeWarning.textContent = "";
+
+    showStep(0);
 });

@@ -137,7 +137,7 @@
             <div class="event-grid">
                 <article class="event-card">
                     <h3>화면 테마</h3>
-                    <button id="theme-button" type="button">어두운 테마로 바꾸기</button>
+                    <button id="theme-button" class="primary-button" type="button">어두운 테마로 바꾸기</button>
                 </article>
 
                 <article class="event-card">
@@ -150,22 +150,106 @@
                 </article>
 
                 <article class="event-card">
-                    <h3>관리 정보 확인</h3>
+                    <h3>점검 상담 메모</h3>
 
                     <label class="agree-row">
                         <input type="checkbox" id="agree-check">
-                        관리 정보를 확인할 준비가 되었습니다.
+                        점검 상담을 준비했습니다.
                     </label>
 
                     <p id="agree-message" aria-live="polite">
-                        체크하면 관리 정보를 확인할 수 있습니다.
+                        체크하면 상담 메모 작성을 시작할 수 있습니다.
                     </p>
 
-                    <button id="start-button" type="button" disabled>
-                        관리 정보 확인하기
-                    </button>
+                    <button id="start-button" class="primary-button" type="button" disabled> 상담 메모 시작하기</button>
                 </article>
             </div>
+
+        </section>
+
+        <dialog id="start-dialog"
+                aria-labelledby="start-dialog-title"
+                aria-describedby="start-dialog-description">
+
+            <h2 id="start-dialog-title">점검 상담 메모 안내</h2>
+
+            <p id="start-dialog-description">
+                차량에서 느낀 이상 증상과 발생 빈도,
+                경고등 정보를 정리하는 메모입니다.
+            </p>
+
+            <p>
+                작성한 내용은 정비소 상담에 참고하는 용도이며,
+                별도로 저장하거나 전송하지 않습니다.
+            </p>
+
+            <div class="dialog-actions">
+                <button id="dialog-back" class="primary-button" type="button">돌아가기</button>
+                <button id="dialog-confirm" class="primary-button" type="button">메모 작성 시작하기</button>
+            </div>
+        </dialog>
+
+        <section id="training-flow" class="training-flow" hidden>
+            <h2>내 차 점검 상담 메모</h2>
+
+            <p class="progress" aria-label="메모 작성 진행 단계">
+                <span class="progress_item">1·증상</span>
+                <span class="progress_item">2·선택</span>
+                <span class="progress_item">3·확인</span>
+            </p>
+
+            <section class="step" data-step="1" hidden>
+                <h3>차량에서 느낀 현상을 입력해 주세요</h3>
+                <label for="symptom-input">이상 증상</label>
+                <input id="symptom-input" type="text" placeholder="예: 출발할 때 차량이 떨려요" aria-describedby="symptom-error">
+                <p id="symptom-error" class="error-message" aria-live="polite"></p>
+                <button id="symptom-next" class="primary-button" type="button">발생 빈도 선택하기</button>
+            </section>
+
+            <section class="step" data-step="2" hidden>
+                <h3>발생 빈도와 경고등을 선택해 주세요</h3>
+                <label for="frequency-range">증상 발생 빈도</label>
+                <input id="frequency-range" type="range" min="0" max="2" step="1" value="1">
+                <output id="frequency-value" for="frequency-range">가끔</output>
+                <label><input type="checkbox" id="warning-option">경고등을 본 적이 있습니다.</label>
+                <fieldset id="warning-options" hidden>
+                    <legend>경고등 색상</legend>
+                    <label><input type="radio" name="warning-color" value="빨간색">빨간색</label>
+                    <label><input type="radio" name="warning-color" value="노란색">노란색</label>
+                    <label><input type="radio" name="warning-color" value="잘 모르겠음" checked>잘 모르겠음</label>
+
+                </fieldset>
+                <div class="step-actions">
+                    <button id="option-prev" class="primary-button" type="button">이전</button>
+                    <button id="option-next" class="primary-button" type="button">작성 내용 확인하기</button>
+                </div>
+            </section>
+
+            <section class="step" data-step="3" hidden>
+                <h3>작성한 내용을 확인해 주세요</h3>
+
+                <div class="summary-list">
+                    <div><span>이상 증상</span><strong id="summary-symptom"></strong></div>
+                    <div><span>발생 빈도</span><strong id="summary-frequency"></strong></div>
+                    <div><span>경고등 정보</span><strong id="summary-warning"></strong></div>
+                </div>
+
+                <div class="step-actions">
+                    <button id="summary-prev" class="primary-button" type="button">수정하기</button>
+                    <button id="finish-button" class="primary-button" type="button">메모 작성 완료하기</button>
+                </div>
+            </section>
+
+            <section class="step complete-step" data-step="4" hidden>
+                <h3>상담 메모 작성이 완료되었습니다.</h3>
+                <p>작성한 내용을 확인했습니다. 정비소 상담에 참고할 수 있습니다.</p>
+                <div class="summary-list">
+                    <div><span>이상 증상</span><strong id="complete-symptom"></strong></div>
+                    <div><span>발생 빈도</span><strong id="complete-frequency"></strong></div>
+                    <div><span>경고등 정보</span><strong id="complete-warning"></strong></div>
+                </div>
+                <button id="restart-button" class="primary-button" type="button">다시 작성하기</button>
+            </section>
 
         </section>
 
