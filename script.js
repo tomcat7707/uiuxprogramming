@@ -268,6 +268,8 @@ restartButton.addEventListener("click", () => {
     completeFrequency.textContent = "";
     completeWarning.textContent = "";
 
+    saveMemoMessage.textContent = "";
+    
     showStep(0);
 });
 
