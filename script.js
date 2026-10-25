@@ -270,3 +270,68 @@ restartButton.addEventListener("click", () => {
 
     showStep(0);
 });
+
+const saveMemoButton = document.querySelector("#save-memo-button");
+const saveMemoMessage = document.querySelector("#save-memo-message");
+const memoStorageMessage = document.querySelector("#memo-storage-message");
+const savedMemoControls = document.querySelector("#saved-memo-controls");
+
+const openSavedMemo = document.querySelector("#open-saved-memo");
+const cancelSavedMemo = document.querySelector("#cancel-saved-memo");
+const savedMemoContent = document.querySelector("#saved-memo-content");
+const savedSymptom = document.querySelector("#saved-symptom");
+const savedFrequency = document.querySelector("#saved-frequency");
+const savedWarning = document.querySelector("#saved-warning");
+
+const savedMemo = {
+    symptom: "",
+    frequency: "",
+    warning: ""
+};
+
+let hasSavedMemo = false;
+
+function handleSaveMemoClick() {
+    if (hasSavedMemo) {
+        saveMemoMessage.textContent = "이미 보관된 메모가 있습니다. 먼저 보관을 취소해 주세요.";
+        return;
+    }
+
+    savedMemo.symptom = completeSymptom.textContent;
+    savedMemo.frequency = completeFrequency.textContent;
+    savedMemo.warning = completeWarning.textContent;
+
+    hasSavedMemo = true;
+
+    saveMemoMessage.textContent = "상담 메모를 임시 보관했습니다.";
+    memoStorageMessage.textContent = "상담 메모 1건이 임시 보관되어 있습니다.";
+    savedMemoControls.hidden = false;
+}
+
+saveMemoButton.addEventListener("click", handleSaveMemoClick);
+
+openSavedMemo.addEventListener("click", () => {
+    savedSymptom.textContent = savedMemo.symptom;
+    savedFrequency.textContent = savedMemo.frequency;
+    savedWarning.textContent = savedMemo.warning;
+
+    savedMemoContent.hidden = false;
+});
+
+cancelSavedMemo.addEventListener("click", () => {
+    savedMemo.symptom = "";
+    savedMemo.frequency = "";
+    savedMemo.warning = "";
+
+    hasSavedMemo = false;
+
+    savedSymptom.textContent = "";
+    savedFrequency.textContent = "";
+    savedWarning.textContent = "";
+
+    savedMemoContent.hidden = true;
+    savedMemoControls.hidden = true;
+
+    memoStorageMessage.textContent = "아직 보관된 메모가 없습니다. 상담 메모를 작성한 뒤 임시 보관해 주세요.";
+    saveMemoMessage.textContent = "임시 보관을 취소했습니다.";
+});

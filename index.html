@@ -179,8 +179,9 @@
             </p>
 
             <p>
-                작성한 내용은 정비소 상담에 참고하는 용도이며,
-                별도로 저장하거나 전송하지 않습니다.
+                작성한 내용은 정비소 상담에 참고하는 용도입니다.
+                메모 한 건을 이 페이지에 임시 보관할 수 있습니다.
+                새로고침하면 보관한 메모가 사라집니다.
             </p>
 
             <div class="dialog-actions">
@@ -248,9 +249,50 @@
                     <div><span>발생 빈도</span><strong id="complete-frequency"></strong></div>
                     <div><span>경고등 정보</span><strong id="complete-warning"></strong></div>
                 </div>
-                <button id="restart-button" class="primary-button" type="button">다시 작성하기</button>
+
+                <div class="step-actions">
+                    <button id="save-memo-button" class="primary-button" type="button">
+                        임시 보관하기
+                    </button>
+                    <button id="restart-button" class="primary-button" type="button">
+                        다시 작성하기
+                    </button>
+                </div>
+
+                <p id="save-memo-message" aria-live="polite"></p>
+
             </section>
 
+        </section>
+
+        <section id="memo-storage" class="training-flow">
+            <h2>임시 보관한 상담 메모</h2>
+            <p>보관 내용은 새로고침하면 사라집니다.</p>
+
+            <p id="memo-storage-message" aria-live="polite">
+                아직 보관된 메모가 없습니다.
+                상담 메모를 작성한 뒤 임시 보관해 주세요.
+            </p>
+
+            <div id="saved-memo-controls" hidden>
+                <div class="step-actions">
+                    <button id="open-saved-memo" class="primary-button" type="button">
+                        보관된 메모 열기
+                    </button>
+                    <button id="cancel-saved-memo" class="primary-button" type="button">
+                        보관 취소하기
+                    </button>
+                </div>
+            </div>
+
+            <div id="saved-memo-content" hidden>
+                <h3>보관된 메모 내용</h3>
+                <div class="summary-list">
+                    <div><span>이상 증상</span><strong id="saved-symptom"></strong></div>
+                    <div><span>발생 빈도</span><strong id="saved-frequency"></strong></div>
+                    <div><span>경고등 정보</span><strong id="saved-warning"></strong></div>
+                </div>
+            </div>
         </section>
 
         <section id="subscribe" class="subscribe-card"> <!-- 기존 차량 관리 알림 폼 -->
