@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+:root {
+    --success: #16805d;
+    --success-bg: #e7f7ed;
+}
 
 body {
     margin: 0;
@@ -241,6 +245,8 @@ input[type="email"], input[type="text"] {
 body.dark {
     color: #f4f4f8;
     background-color: #20212a;
+    --success: #a2f0c7;
+    --success-bg: #2b493d;
 }
 
 body.dark p,
@@ -347,6 +353,11 @@ body.dark #start-dialog {background: #50515f; color: #ffffff;}
     background-color: #ffffff;
 }
 
+.training-flow form {
+    display: block;
+    max-width: none;
+}
+
 .training-flow[hidden],
 .training-flow .step[hidden],
 .training-flow fieldset[hidden] {display: none;}
@@ -365,6 +376,12 @@ body.dark #start-dialog {background: #50515f; color: #ffffff;}
 
 .training-flow #symptom-input.has-error {border-color: #9d243d;}
 .training-flow #symptom-input {max-width: 570px;}
+.training-flow .field-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.training-flow .field-meta p { margin: 0; }
+#symptom-count { font-size: 12px; font-variant-numeric: tabular-nums; }
+.training-flow #symptom-field.is-valid #symptom-input { border-color: var(--success); background-color: var(--success-bg); }
+.training-flow #symptom-field.is-valid #symptom-count { color: var(--success); font-weight: 800; }
+.training-flow #symptom-field.has-error #symptom-count { color: #9d243d; font-weight: 800; }
 .training-flow #frequency-range {width: 100%; accent-color: #635bff;}
 
 .training-flow #frequency-value {display: block; margin-top: 8px; margin-bottom: 16px;}
@@ -388,6 +405,22 @@ body.dark #start-dialog {background: #50515f; color: #ffffff;}
     display: flex;
     gap: 12px;
     margin-top: 20px;
+}
+
+.training-flow .submit-status {
+    min-height: 24px;
+    margin: 14px 0 0;
+    color: #5e6272;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.training-flow .submit-status.is-success {
+    color: var(--success);
+}
+
+.training-flow .submit-status.has-error {
+    color: #9d243d;
 }
 
 body.dark .training-flow {

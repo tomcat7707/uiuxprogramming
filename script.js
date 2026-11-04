@@ -122,19 +122,86 @@ tabs.forEach(function (tab) {
 });
 
 const trainingFlow = document.querySelector("#training-flow");
+
+const memoForm = document.querySelector("#memo-form");
+
+memoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (flowSteps[2].hidden || isSubmitting) return;
+
+    if (!validateSymptom()) {
+        showStep(0);
+        symptomInput.focus();
+        return;
+    }
+    const submittedData = new FormData(memoForm);
+
+    setSubmitState("loading", "상담 메모를 작성하고 있습니다.");
+
+    window.setTimeout(() => {
+
+        if (forceSaveFailure) {
+            setSubmitState("error", "메모 작성 처리에 실패했습니다. 입력 내용은 그대로 유지됩니다. 다시 시도해 주세요.");
+            return;
+        }
+
+        completeSymptom.textContent = submittedData.get("symptom");
+        const frequencyLabels = ["한 번", "가끔", "자주"];
+
+        completeFrequency.textContent =
+            frequencyLabels[Number(submittedData.get("frequency"))];
+
+        if (submittedData.has("warning")) {
+            completeWarning.textContent = submittedData.get("warning-color");
+        } else {
+            completeWarning.textContent = summaryWarning.textContent;
+        }
+
+        setSubmitState("success", "상담 메모 작성이 완료되었습니다.");
+        showStep(3);
+    }, 600);
+});
+
 const flowSteps = trainingFlow.querySelectorAll(".step");
 const progressItems = trainingFlow.querySelectorAll(".progress_item");
 const symptomInput = document.querySelector("#symptom-input");
 const symptomError = document.querySelector("#symptom-error");
+
+const symptomField = document.querySelector("#symptom-field");
+const symptomHelp = document.querySelector("#symptom-help");
+const symptomCount = document.querySelector("#symptom-count");
+
 const symptomNext = document.querySelector("#symptom-next");
 const frequencyRange = document.querySelector("#frequency-range");
 const frequencyValue = document.querySelector("#frequency-value");
 const warningOption = document.querySelector("#warning-option");
 const warningOptions = document.querySelector("#warning-options");
+const warningColorInputs = document.querySelectorAll('input[name="warning-color"]');
 const optionPrev = document.querySelector("#option-prev");
 const optionNext = document.querySelector("#option-next");
 const summaryPrev = document.querySelector("#summary-prev");
 const finishButton = document.querySelector("#finish-button");
+const submitStatus = document.querySelector("#submit-status");
+let isSubmitting = false;
+const forceSaveFailure = new URLSearchParams(location.search).has("save-error");
+
+function setSubmitState(state, message) {
+    isSubmitting = state === "loading";
+    memoForm.setAttribute("aria-busy", String(isSubmitting));
+
+    finishButton.disabled = isSubmitting;
+
+    finishButton.textContent = isSubmitting
+        ? "메모 작성 중…"
+        : "메모 작성 완료하기";
+
+    submitStatus.textContent = message;
+
+    submitStatus.classList.toggle("is-success", state === "success");
+    submitStatus.classList.toggle("has-error", state === "error");
+}
+
 const restartButton = document.querySelector("#restart-button");
 const summarySymptom = document.querySelector("#summary-symptom");
 const summaryFrequency = document.querySelector("#summary-frequency");
@@ -196,16 +263,53 @@ function validateSymptom() {
     if (!value) {
         symptomError.textContent = "차량에서 느낀 현상을 입력해 주세요.";
         symptomInput.classList.add("has-error");
+        symptomInput.setAttribute("aria-invalid", "true");
+        updateSymptomExperience();
+        symptomInput.focus();
+        return false;
+    }
+
+    if (value.length < 2) {
+        symptomError.textContent = "차량에서 느낀 현상을 2자 이상 입력해 주세요.";
+        symptomInput.classList.add("has-error");
+        symptomInput.setAttribute("aria-invalid", "true");
+        updateSymptomExperience();
         symptomInput.focus();
         return false;
     }
 
     symptomError.textContent = "";
     symptomInput.classList.remove("has-error");
+    symptomInput.removeAttribute("aria-invalid");
+    updateSymptomExperience()
     formData.symptom = value;
     return true;
 }
 
+function updateSymptomExperience() {
+    const length = symptomInput.value.length;
+    const valid = symptomInput.value.trim().length >= 2;
+    const hasError = symptomInput.getAttribute("aria-invalid") === "true";
+
+    symptomCount.textContent = length + " / 60자";
+
+    symptomField.classList.toggle("has-error", hasError);
+    symptomField.classList.toggle("is-valid", valid && !hasError);
+
+    symptomHelp.textContent = valid && !hasError
+        ? "입력 조건을 충족했습니다."
+        : "차량에서 느낀 증상을 2자 이상 60자 이하로 입력해 주세요.";
+}
+
+symptomInput.addEventListener("input", () => {
+    if (symptomInput.getAttribute("aria-invalid") === "true") {
+        validateSymptom();
+    } else {
+        updateSymptomExperience();
+    }
+});
+
+updateSymptomExperience();
 
 symptomNext.addEventListener("click", () => {
     if (!validateSymptom()) return;
@@ -217,10 +321,19 @@ frequencyRange.addEventListener("input", () => {
     frequencyValue.value = frequencyValues[frequencyRange.value];
 });
 
+function syncWarningOptions() {
+    const open = warningOption.checked;
 
-warningOption.addEventListener("change", () => {
-    warningOptions.hidden = !warningOption.checked;
-});
+    warningOption.setAttribute("aria-expanded", String(open));
+    warningOptions.hidden = !open;
+
+    warningColorInputs.forEach((input) => {
+        input.disabled = !open;
+    });
+}
+
+warningOption.addEventListener("change", syncWarningOptions);
+syncWarningOptions();
 
 
 optionPrev.addEventListener("click", () => showStep(0));
@@ -237,13 +350,6 @@ optionNext.addEventListener("click", () => {
 
 summaryPrev.addEventListener("click", () => showStep(1));
 
-finishButton.addEventListener("click", () => {
-    completeSymptom.textContent = summarySymptom.textContent;
-    completeFrequency.textContent = summaryFrequency.textContent;
-    completeWarning.textContent = summaryWarning.textContent;
-    showStep(3);
-});
-
 restartButton.addEventListener("click", () => {
     formData.symptom = "";
     formData.frequency = "가끔";
@@ -254,10 +360,14 @@ restartButton.addEventListener("click", () => {
     symptomError.textContent = "";
     symptomInput.classList.remove("has-error");
 
+    symptomInput.removeAttribute("aria-invalid");
+    symptomField.classList.remove("is-valid", "has-error");
+    updateSymptomExperience();
+
     frequencyRange.value = "1";
     frequencyValue.value = "가끔";
     warningOption.checked = false;
-    warningOptions.hidden = true;
+    syncWarningOptions();
     document.querySelector('input[name="warning-color"][value="잘 모르겠음"]').checked = true;
 
     summarySymptom.textContent = "";
@@ -269,6 +379,7 @@ restartButton.addEventListener("click", () => {
     completeWarning.textContent = "";
 
     saveMemoMessage.textContent = "";
+    setSubmitState("idle", "");
     
     showStep(0);
 });

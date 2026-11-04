@@ -198,21 +198,40 @@
                 <span class="progress_item">2·선택</span>
                 <span class="progress_item">3·확인</span>
             </p>
+            <form id="memo-form" novalidate aria-busy="false">
 
             <section class="step" data-step="1" hidden>
                 <h3>차량에서 느낀 현상을 입력해 주세요</h3>
-                <label for="symptom-input">이상 증상</label>
-                <input id="symptom-input" type="text" placeholder="예: 출발할 때 차량이 떨려요" aria-describedby="symptom-error">
-                <p id="symptom-error" class="error-message" aria-live="polite"></p>
+
+                <div class="field" id="symptom-field">
+                    <label for="symptom-input">이상 증상</label>
+                    <input
+                        id="symptom-input"
+                        name="symptom"
+                        minlength="2"
+                        maxlength="60"
+                        required
+                        type="text"
+                        placeholder="예: 출발할 때 차량이 떨려요"
+                        aria-describedby="symptom-help symptom-count symptom-error">
+
+                    <div class="field-meta">
+                        <p id="symptom-help">차량에서 느낀 증상을 2자 이상 60자 이하로 입력해 주세요.</p>
+                        <p id="symptom-count" aria-live="polite">0 / 60자</p>
+                    </div>
+
+                    <p id="symptom-error" class="error-message" aria-live="polite"></p>
+                </div>
+
                 <button id="symptom-next" class="primary-button" type="button">발생 빈도 선택하기</button>
             </section>
 
             <section class="step" data-step="2" hidden>
                 <h3>발생 빈도와 경고등을 선택해 주세요</h3>
                 <label for="frequency-range">증상 발생 빈도</label>
-                <input id="frequency-range" type="range" min="0" max="2" step="1" value="1">
+                <input id="frequency-range" name="frequency" type="range" min="0" max="2" step="1" value="1">
                 <output id="frequency-value" for="frequency-range">가끔</output>
-                <label><input type="checkbox" id="warning-option">경고등을 본 적이 있습니다.</label>
+                <label><input type="checkbox" id="warning-option" name="warning" value="seen" aria-controls="warning-options" aria-expanded="false">경고등을 본 적이 있습니다.</label>                
                 <fieldset id="warning-options" hidden>
                     <legend>경고등 색상</legend>
                     <label><input type="radio" name="warning-color" value="빨간색">빨간색</label>
@@ -237,8 +256,9 @@
 
                 <div class="step-actions">
                     <button id="summary-prev" class="primary-button" type="button">수정하기</button>
-                    <button id="finish-button" class="primary-button" type="button">메모 작성 완료하기</button>
+                    <button id="finish-button" class="primary-button" type="submit">메모 작성 완료하기</button>
                 </div>
+
             </section>
 
             <section class="step complete-step" data-step="4" hidden>
@@ -262,6 +282,10 @@
                 <p id="save-memo-message" aria-live="polite"></p>
 
             </section>
+
+            <p id="submit-status" class="submit-status" role="status" aria-live="polite"></p>
+
+            </form>
 
         </section>
 
