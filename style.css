@@ -116,12 +116,45 @@ section {
   margin-top: 56px;
 }
 
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
+.site-nav {
     margin-top: 24px;
 }
+
+
+/* 10주차 - 모바일 메뉴 버튼 */
+.menu-toggle {
+    display: none;
+    width: auto;
+    min-height: 44px;
+    margin-top: 16px;
+    padding: 10px 16px;
+    border: 1px solid #d7d4f6;
+    border-radius: 10px;
+    background-color: #f4f3ff;
+    color: #292a31;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+body.dark .menu-toggle {
+    background-color: #42434f;
+    border-color: #85859a;
+    color: #ffffff;
+}
+
+
+.site-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+
 
 nav a {
     color: inherit;
@@ -141,6 +174,15 @@ nav a:focus {
   outline: 3px solid #b9b4ef;
   outline-offset: 3px;
 }
+
+
+
+.site-nav a.is-current {
+    color: #4038a5;
+    background-color: #ebe9ff;
+    box-shadow: inset 0 -3px 0 #635bff;
+}
+
 
 img {
   display: block;
@@ -254,6 +296,12 @@ body.dark nav a {
     color: #d8d8e2;
 }
 
+
+body.dark .site-nav a:hover {
+    color: #4038a5;
+    background-color: #ebe9ff;
+}
+
 body.dark .feature-card,
 body.dark .event-card,
 body.dark .subscribe-card {
@@ -352,6 +400,52 @@ body.dark #start-dialog {background: #50515f; color: #ffffff;}
     border-radius: 24px;
     background-color: #ffffff;
 }
+
+
+/* 10주차 - 상담 메모 필터 */
+.memo-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.memo-filters .filter-button {
+    width: auto;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid #d7d4f6;
+    border-radius: 10px;
+    background-color: #f4f3ff;
+    color: #292a31;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.memo-filters .filter-button.is-active {
+    border-color: #635bff;
+    background-color: #635bff;
+    color: #ffffff;
+}
+
+.memo-filters .filter-button:focus-visible {
+    outline: 3px solid #b9b4ef;
+    outline-offset: 2px;
+}
+
+body.dark .memo-filters .filter-button {
+    background-color: #42434f;
+    border-color: #85859a;
+    color: #ffffff;
+}
+
+body.dark .memo-filters .filter-button.is-active {
+    background-color: #635bff;
+    border-color: #635bff;
+}
+
 
 .training-flow form {
     display: block;
@@ -457,12 +551,7 @@ body.dark .training-flow {
         align-items: stretch;
     }
 
-    /* 가로 메뉴를 위에서 아래로 배치 */
-    nav {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
+
 
     nav a {
         /* 링크 글자 주변에도 누를 수 있는 여백 추가 */
@@ -526,4 +615,34 @@ body.dark .training-flow {
     color: #ffffff;
     background-color: #a8a8b2;
     cursor: not-allowed;
+}
+
+
+/* 10주차 - 600px 이하 모바일 메뉴 */
+@media (max-width: 600px) {
+    .menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .site-nav {
+        display: none;
+    }
+
+    .site-nav.is-open {
+        display: block;
+    }
+
+    .site-nav ul {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .site-nav a {
+        display: block;
+        min-height: 44px;
+        padding: 10px 12px;
+    }
 }

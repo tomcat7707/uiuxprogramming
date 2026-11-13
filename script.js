@@ -121,6 +121,53 @@ tabs.forEach(function (tab) {
     tab.addEventListener("click", handleTabClick);
 });
 
+const navLinks = document.querySelectorAll(".site-nav a");
+
+
+const menuToggle = document.querySelector("#menu-toggle");
+const mainNav = document.querySelector("#main-nav");
+
+
+function updateCurrentNav() {
+    const currentHash = window.location.hash;
+
+    navLinks.forEach((link) => {
+        const current = currentHash
+            ? link.getAttribute("href") === currentHash
+            : link === navLinks[0];
+
+        link.classList.toggle("is-current", current);
+
+        if (current) {
+            link.setAttribute("aria-current", "page");
+        } else {
+            link.removeAttribute("aria-current");
+        }
+    });
+}
+
+window.addEventListener("hashchange", updateCurrentNav);
+updateCurrentNav();
+
+
+menuToggle.addEventListener("click", () => {
+    const isOpen = mainNav.classList.toggle("is-open");
+
+    menuToggle.textContent = isOpen ? "메뉴 닫기" : "메뉴 열기";
+
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+});
+
+
+navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+        mainNav.classList.remove("is-open");
+        menuToggle.textContent = "메뉴 열기";
+        menuToggle.setAttribute("aria-expanded", "false");
+    });
+});
+
+
 const trainingFlow = document.querySelector("#training-flow");
 
 const memoForm = document.querySelector("#memo-form");
@@ -387,6 +434,7 @@ restartButton.addEventListener("click", () => {
 const saveMemoButton = document.querySelector("#save-memo-button");
 const saveMemoMessage = document.querySelector("#save-memo-message");
 const memoStorageMessage = document.querySelector("#memo-storage-message");
+const memoCount = document.querySelector("#memo-count");
 const savedMemoControls = document.querySelector("#saved-memo-controls");
 
 const openSavedMemo = document.querySelector("#open-saved-memo");
@@ -404,6 +452,69 @@ const savedMemo = {
 
 let hasSavedMemo = false;
 
+
+const filterButtons = document.querySelectorAll(".memo-filters .filter-button");
+let currentFilter = "all";
+
+filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        currentFilter = button.dataset.filter;
+
+        filterButtons.forEach((item) => {
+            const selected = item === button;
+
+            item.classList.toggle("is-active", selected);
+            item.setAttribute("aria-pressed", String(selected));
+        });
+        renderSavedMemos();
+    });
+});
+
+
+function getVisibleMemos() {
+    if (!hasSavedMemo) {
+        return [];
+    }
+
+    const frequencyFilters = {
+        once: "한 번",
+        sometimes: "가끔",
+        often: "자주"
+    };
+
+    if (currentFilter === "all" ||
+        savedMemo.frequency === frequencyFilters[currentFilter]) {
+        return [savedMemo];
+    }
+
+    return [];
+}
+
+function renderSavedMemos() {
+    const visibleMemos = getVisibleMemos();
+
+    memoCount.textContent =
+        `현재 표시 중인 상담 메모 ${visibleMemos.length}건`;
+
+    savedMemoControls.hidden = visibleMemos.length === 0;
+
+    if (visibleMemos.length === 0) {
+        savedMemoContent.hidden = true;
+    }
+
+    if (!hasSavedMemo) {
+        memoStorageMessage.textContent =
+            "아직 보관된 메모가 없습니다. 상담 메모를 작성한 뒤 임시 보관해 주세요.";
+    } else if (visibleMemos.length === 0) {
+        memoStorageMessage.textContent =
+            "선택한 발생 빈도에 해당하는 메모가 없습니다. 다른 발생 빈도를 선택해 보세요.";
+    } else {
+        memoStorageMessage.textContent =
+            "상담 메모 1건이 임시 보관되어 있습니다.";
+    }
+}
+
+
 function handleSaveMemoClick() {
     if (hasSavedMemo) {
         saveMemoMessage.textContent = "이미 보관된 메모가 있습니다. 먼저 보관을 취소해 주세요.";
@@ -417,8 +528,7 @@ function handleSaveMemoClick() {
     hasSavedMemo = true;
 
     saveMemoMessage.textContent = "상담 메모를 임시 보관했습니다.";
-    memoStorageMessage.textContent = "상담 메모 1건이 임시 보관되어 있습니다.";
-    savedMemoControls.hidden = false;
+    renderSavedMemos();
 }
 
 saveMemoButton.addEventListener("click", handleSaveMemoClick);
@@ -445,6 +555,7 @@ cancelSavedMemo.addEventListener("click", () => {
     savedMemoContent.hidden = true;
     savedMemoControls.hidden = true;
 
-    memoStorageMessage.textContent = "아직 보관된 메모가 없습니다. 상담 메모를 작성한 뒤 임시 보관해 주세요.";
-    saveMemoMessage.textContent = "임시 보관을 취소했습니다.";
+    renderSavedMemos();
 });
+
+renderSavedMemos();
