@@ -298,6 +298,8 @@ function resetMemoPreparation() {
 startButton.addEventListener("click", () => {
     if (!agreeCheck.checked) return;
     startDialog.showModal();
+
+    document.querySelector("#start-dialog-title").focus();
 });
 
 dialogBack.addEventListener("click", () => {

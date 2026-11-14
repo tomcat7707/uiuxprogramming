@@ -756,3 +756,16 @@ body.dark #subscribeMessage.isSuccess {
 body.dark .training-flow .submit-status.has-error {
     color: #ffd0da;
 }
+
+/* 11주차 - 팝업 안내 제목의 초점 표시 */
+#start-dialog-title:focus {
+    width: fit-content;
+    max-width: 100%;
+    outline: 3px solid #b9b4ef;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+body.dark #start-dialog-title:focus {
+    outline-color: #cbc8ff;
+}
