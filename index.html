@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <a class="skip-link" href="#top">본문 바로가기</a>
 
     <!--
     사용자: 차량을 오래 안전하게 관리하고 싶은 운전자
@@ -47,7 +48,7 @@
 
     </header>
 
-    <main>
+    <main id="top" tabindex="-1">
         <section id="about"> <!-- 기존 서비스 소개와 이미지 -->
             <h2>서비스 소개</h2>
 
@@ -58,7 +59,7 @@
                     <p>차량의 주요 관리 항목을 한눈에 확인하고 필요한 시기에 관리할 수 있습니다.</p>
                 </div>
 
-                <img class="service-image" src="assets/images/car-care.png" alt="자동차를 점검하고 관리하는 모습">
+                <img class="service-image" src="assets/images/car-care.png" alt="정비소에서 작업자가 자동차 앞바퀴 부근을 점검하는 모습">
 
             </div>
         </section>
@@ -197,7 +198,7 @@
             </p>
 
             <div class="dialog-actions">
-                <button id="dialog-back" class="primary-button" type="button">돌아가기</button>
+                <button id="dialog-back" class="primary-button" type="button">메모 작성 취소하기</button>
                 <button id="dialog-confirm" class="primary-button" type="button">메모 작성 시작하기</button>
             </div>
         </dialog>
@@ -229,7 +230,7 @@
 
                     <div class="field-meta">
                         <p id="symptom-help">차량에서 느낀 증상을 2자 이상 60자 이하로 입력해 주세요.</p>
-                        <p id="symptom-count" aria-live="polite">0 / 60자</p>
+                        <p id="symptom-count">0 / 60자</p>
                     </div>
 
                     <p id="symptom-error" class="error-message" aria-live="polite"></p>
@@ -258,7 +259,7 @@
             </section>
 
             <section class="step" data-step="3" hidden>
-                <h3>작성한 내용을 확인해 주세요</h3>
+                <h3 tabindex="-1">작성한 내용을 확인해 주세요</h3>
 
                 <div class="summary-list">
                     <div><span>이상 증상</span><strong id="summary-symptom"></strong></div>
@@ -334,7 +335,7 @@
                 현재 표시 중인 상담 메모 0건
             </p>
 
-            <p id="memo-storage-message" aria-live="polite">
+            <p id="memo-storage-message" aria-live="polite" tabindex="-1">
                 아직 보관된 메모가 없습니다.
                 상담 메모를 작성한 뒤 임시 보관해 주세요.
             </p>

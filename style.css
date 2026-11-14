@@ -461,6 +461,10 @@ body.dark .memo-filters .filter-button.is-active {
     font-weight: 800;
 }
 
+/* 11주차 - 어두운 테마의 진행 단계 대비 개선 */
+body.dark .training-flow .progress_item.is-active {
+    color: #cbc8ff;
+}
 
 .training-flow .error-message {
     min-height: 24px;
@@ -645,4 +649,110 @@ body.dark .training-flow {
         min-height: 44px;
         padding: 10px 12px;
     }
+}
+
+/* 11주차 - 어두운 테마의 글자 대비 개선 */
+body.dark h2 {
+    color: #cbc8ff;
+}
+
+body.dark #subscribeMessage {
+    color: #e5e4f0;
+}
+
+/* 11주차 - 메뉴와 필터의 선택 상태 표시 */
+.site-nav a[aria-current="page"],
+.memo-filters .filter-button[aria-pressed="true"] {
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+
+/* 11주차 - 취소 버튼과 시작 버튼 구분 */
+#dialog-back {
+    background-color: #f4f3ff;
+    color: #292a31;
+    border: 1px solid #85859a;
+}
+
+#dialog-back:hover {
+    background-color: #ebe9ff;
+}
+
+/* 어두운 테마에서도 취소 버튼 구분 */
+body.dark #dialog-back {
+    background-color: #42434f;
+    color: #ffffff;
+    border-color: #b9b4ef;
+}
+
+/* 11주차 - 키보드 사용자를 위한 본문 바로가기 */
+.skip-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+    padding: 10px 14px;
+    border: 2px solid #635bff;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #292a31;
+    transform: translateY(-160%);
+}
+
+.skip-link:focus-visible {
+    transform: translateY(0);
+}
+
+/* 11주차 - 보관 취소 후 안내 문구의 초점 표시 */
+#memo-storage-message:focus {
+    outline: 3px solid #635bff;
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* 어두운 테마에서는 밝은 색상으로 표시 */
+body.dark #memo-storage-message:focus {
+    outline-color: #cbc8ff;
+}
+
+/* 11주차 - 작성 내용 확인 화면의 초점 표시 */
+.step[data-step="3"] h3:focus {
+    width: fit-content;
+    max-width: 100%;
+    outline: 3px solid #635bff;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+body.dark .step[data-step="3"] h3:focus {
+    outline-color: #cbc8ff;
+}
+
+/* 11주차 - 어두운 테마의 이상 증상 입력 글자색 개선 */
+body.dark .training-flow #symptom-field.is-valid #symptom-input {
+    color: #ffffff;
+    caret-color: #ffffff;
+}
+
+/* 11주차 - 어두운 테마의 오류 문구 대비 개선 */
+body.dark .training-flow .error-message {
+    color: #ffd0da;
+}
+
+body.dark .training-flow #symptom-field.has-error #symptom-count {
+    color: #ffd0da;
+}
+
+/* 11주차 - 어두운 테마의 상태 안내 대비 개선 */
+
+/* 이메일 신청 완료 */
+body.dark #subscribeMessage.isSuccess {
+    color: #a2f0c7;
+    background-color: #2b493d;
+}
+
+/* 메모 작성 처리 실패 */
+body.dark .training-flow .submit-status.has-error {
+    color: #ffd0da;
 }

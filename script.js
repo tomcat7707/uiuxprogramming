@@ -144,6 +144,9 @@ function updateCurrentNav() {
             link.removeAttribute("aria-current");
         }
     });
+    const currentLink = document.querySelector('.site-nav a[aria-current="page"]');
+    const pageName = currentLink ? currentLink.textContent.trim() : "홈";
+    document.title = pageName + " | 차와 함께 오래";
 }
 
 window.addEventListener("hashchange", updateCurrentNav);
@@ -158,6 +161,16 @@ menuToggle.addEventListener("click", () => {
     menuToggle.setAttribute("aria-expanded", String(isOpen));
 });
 
+// 11주차 - Esc로 모바일 메뉴 닫기
+document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" ||
+        !mainNav.classList.contains("is-open")) return;
+
+    mainNav.classList.remove("is-open");
+    menuToggle.textContent = "메뉴 열기";
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.focus();
+});
 
 navLinks.forEach((link) => {
     link.addEventListener("click", () => {
@@ -393,6 +406,8 @@ optionNext.addEventListener("click", () => {
     summaryFrequency.textContent = formData.frequency;
     summaryWarning.textContent = formData.warning ? formData.warningColor : "경고등 정보 미입력";
     showStep(2);
+
+    document.querySelector('.step[data-step="3"] h3').focus();
 });
 
 summaryPrev.addEventListener("click", () => showStep(1));
@@ -493,8 +508,15 @@ function getVisibleMemos() {
 function renderSavedMemos() {
     const visibleMemos = getVisibleMemos();
 
-    memoCount.textContent =
-        `현재 표시 중인 상담 메모 ${visibleMemos.length}건`;
+
+    const selectedFilter = document.querySelector(
+        '.memo-filters .filter-button[aria-pressed="true"]'
+    );
+    const filterName = selectedFilter.textContent.trim();
+
+    memoCount.textContent = visibleMemos.length > 0
+        ? `${filterName} 조건의 상담 메모 ${visibleMemos.length}건이 표시됩니다.`
+        : `${filterName} 조건의 상담 메모가 없습니다.`;
 
     savedMemoControls.hidden = visibleMemos.length === 0;
 
@@ -555,7 +577,17 @@ cancelSavedMemo.addEventListener("click", () => {
     savedMemoContent.hidden = true;
     savedMemoControls.hidden = true;
 
-    renderSavedMemos();
+    // 11주차 - 보관 취소 후 전체 필터로 초기화
+    const allFilterButton = document.querySelector(
+        '.memo-filters .filter-button[data-filter="all"]'
+    );
+    allFilterButton.click();
+
+    // 취소 결과를 안내하고 해당 문구로 초점 이동
+    memoStorageMessage.textContent =
+        "메모 보관을 취소했습니다. 현재 보관된 메모가 없습니다.";
+
+    memoStorageMessage.focus();
 });
 
 renderSavedMemos();
